@@ -26,9 +26,14 @@
                      var p =$("<p>").text('Rating: ' + rating);
                      var animalImg = $("<img>");
                      animalImg.attr("src", results[i].images.fixed_height.url);
-                 };
-                 gifDiv.append(p);
-                 gifDiv.append(animalImg);
+                     animalImg.attr("data-still", results[i].images.fixed_height_still.url);
+                     animalImg.attr("data-animate", results[i].images.fixed_height.url);
+                     animalImg.attr("data-state", "still");
+                    $(gifDiv).append(animalImg)
+                     animalImg.addClass("gifanimate");
+                    };
+                    gifDiv.append(p);
+                    gifDiv.append(animalImg);
 
                  $("#gifs-view").prepend(gifDiv);
              }
@@ -68,7 +73,12 @@
              renderButtons();
          });
 
-         $("#gifs-view").on("click", function() {
+         
+
+         // adding click event to all elements with class gif-btn
+         $(document).on("click", ".gif-btn", displayGifInfo);
+         
+         $(document).on("click", ".gifanimate", function() {
             // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
             var state = $(this).attr("data-state");
             // If the clicked image's state is still, update its src attribute to what its data-animate value is.
@@ -81,21 +91,8 @@
               $(this).attr("src", $(this).attr("data-still"));
               $(this).attr("data-state", "still");
             }
+            console.log("here")
           });
-
-         // adding click event to all elements with class gif-btn
-         $(document).on("click", ".gif-btn", displayGifInfo);
-         
-         $(".gif-btn").on("click",function(){
-             var state = $(this).attr("data-state");
-             if(state === "still"){
-                 $(this).attr("src", $(this).attr("data-animate"));
-                 $(this).attr("data-state", "animate");
-             } else{
-                $(this).attr("src", $(this).attr("still"));
-                $(this).attr("data-state", "still");
-             }
-         });
 
 
          // calling render button to display the inital buttonsl
